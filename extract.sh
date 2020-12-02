@@ -34,6 +34,7 @@ function extract() {
 
 # $1 file/dir
 function findextract() {
+    sleep 0.2
     find "$1" -type f -iname '*.nsz' -or -iname '*.nsp' 2> /dev/null | while read file; do
         extract "$file"
     done
@@ -44,6 +45,6 @@ echo "searching for preexisting files in the background"
 
 echo "start loop..."
 
-inotifywait -e close_write -e moved_to --format "%w%f" -m -r -q "$INDIR" | while read file; do
+inotifywait -e create -e close_write -e moved_to --format "%w%f" -m -r -q "$INDIR" | while read file; do
     findextract "$file"
 done
