@@ -20,5 +20,5 @@ jobs:
       - name: build the image
         run: |
           docker buildx build --push \
-          --tag mellotanica/nsz-extractor:latest \
+          --tag mellotanica/nsz-autoextract:latest \
           --platform linux/amd64,linux/armhf,linux/arm64 .
