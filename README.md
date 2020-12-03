@@ -1,5 +1,5 @@
 # nsz-extractor
-nsz tool docker image with automatic decompression on watched directory and optional nut server update hook
+nsz tool docker image with automatic compression/decompression on watched directory and nsp/nsz organization features
 
 Architectures supported by this image are:
 
@@ -42,16 +42,21 @@ docker run -d \
     -v $HOME/.switch:/opt/switch:ro \
     -e PUID=$(id -u) \
     -e PGID=$(id -g) \
+    -e MODE=compress \
     -e DELETE=false \
     mellotanica/nsz-extractor:latest
 ```
 
 Where:
 
-* $NSZ: is the folder where the compressed files are located
-* $NSP: is the folder where the extracted files will be dropped
-* $HOME/.switch: must contain a valid prod.keys file
-* PUID: is the user id that will be used inside the container for writing the output files
-* PGID: is the group id that will be used inside the container for writing the output files
-* DELETE: if true, compressed files will be removed upon successful decompression
+* `$NSZ`: is the folder where the compressed files are located
+* `$NSP`: is the folder where the extracted files will be dropped
+* `$HOME/.switch`: must contain a valid prod.keys file
+* `PUID`: is the user id that will be used inside the container for writing the output files
+* `PGID`: is the group id that will be used inside the container for writing the output files
+* `DELETE`: if true, compressed files will be removed upon successful decompression
+* `MODE`: is the execution mode, acceptable values are:
+    * `move` - simply copy/move .nsp and .nsz files (depending on `DELETE` value)
+    * `compress` - compress .nsp files and copy/move .nsz files
+    * `extract` - extract .nsz files and copy/move .nsp files
 
