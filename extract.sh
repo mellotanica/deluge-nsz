@@ -31,16 +31,18 @@ function move() {
 # $2 output_prefix
 function extract() {
     echo "unpacking $1 into $2"
-    outf=$(nsz -D -V ${delopt} -w "$1" | grep 'Decompressing ' | grep ' -> ' | sed -e 's/Decompressing .* -> //')
-    move "$outf" "$2" mv
+    oudt="$(dirname "$2")"
+    mkdir -p "$outd"
+    nsz -D -V ${delopt} -o "$outd" -w "$1"
 }
 
 # $1 input
 # $2 output_prefix
 function compress() {
     echo "packing $1 into $2"
-    outf=$(nsz -C -V ${delopt} -w "$1" | grep 'Solid compressing ' | grep ' -> ' | sed -e 's/Solid compressing .* -> //')
-    move "$outf" "$2" mv
+    oudt="$(dirname "$2")"
+    mkdir -p "$outd"
+    nsz -C -V ${delopt} -o "$outd" -w "$1"
 }
 
 # $1 file.nsz
