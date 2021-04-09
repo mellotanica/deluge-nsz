@@ -18,58 +18,54 @@ export delopt
 export mvcmd
 
 # $1 input
-# $2 output
+# $2 output_directory
 # $3 mvcmd
 function move() {
     MVCMD=${3:-${mvcmd}}
     echo "moving $1 to $2"
-    mkdir -p "$(dirname "$2")"
     ${MVCMD} "$1" "$2"
 }
 
 # $1 input
-# $2 output_prefix
+# $2 output_directory
 function extract() {
     echo "unpacking $1 into $2"
-    oudt="$(dirname "$2")"
-    mkdir -p "$outd"
-    nsz -D -V ${delopt} -o "$outd" -w "$1"
+    nsz -D -V ${delopt} -o "$2" -w "$1"
 }
 
 # $1 input
-# $2 output_prefix
+# $2 output_directory
 function compress() {
     echo "packing $1 into $2"
-    oudt="$(dirname "$2")"
-    mkdir -p "$outd"
-    nsz -C -V ${delopt} -o "$outd" -w "$1"
+    nsz -C -V ${delopt} -o "$2" -w "$1"
 }
 
 # $1 file.nsz
 function process() {
-    outpref="$OUTDIR/$(echo "$1" | sed -e "s%^${INDIR}%%" -e 's/\.nsz$//' -e 's/\.nsp$//')"
+    outdir="$(dirname "$OUTDIR/$(echo "$1" | sed -e "s%^${INDIR}%%")")"
+    mkdir -p "$outdir"
     if [[ "$1" = *.nsz ]]; then
         case "$MODE" in
             "move")
-                move "$1" "${outpref}.nsz"
+                move "$1" "$outdir"
                 ;;
             "compress")
-                move "$1" "${outpref}.nsz"
+                move "$1" "$outdir"
                 ;;
             "extract")
-                extract "$1" "${outpref}.nsp"
+                extract "$1" "$outdir"
                 ;;
         esac
     elif [[ $1 = *.nsp ]]; then
         case "$MODE" in
             "move")
-                move "$1" "${outpref}.nsp"
+                move "$1" "$outdir"
                 ;;
             "compress")
-                compress "$1" "${outpref}.nsz"
+                compress "$1" "$outdir"
                 ;;
             "extract")
-                move "$1" "${outpref}.nsp"
+                move "$1" "$outdir"
                 ;;
         esac
     fi
