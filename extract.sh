@@ -80,8 +80,13 @@ function findextract() {
     done
 }
 
-echo "searching for preexisting files in the background"
-(findextract "$INDIR") &
+(
+    sleep 5
+    echo "trigger compression for preexisting files"
+    find "$INDIR" -type f -iname '*.nsz' -or -iname '*.nsp' 2> /dev/null | while read file; do
+        touch "$file"
+    done
+) &
 
 echo "start loop..."
 
