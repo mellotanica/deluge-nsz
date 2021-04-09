@@ -21,4 +21,5 @@ jobs:
         run: |
           docker buildx build --push \
           --tag mellotanica/nsz-autoextract:latest \
+          --cache-from=mellotanica/nsz-autoextract:latest \
           --platform linux/amd64,linux/armhf,linux/arm64 .
